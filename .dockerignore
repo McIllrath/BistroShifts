@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+dist
+dist-*
+.env
+db
+node_modules
+client-dev.log
+server-dev.log
+server-dev-4001.log
+playwright-report
+.git

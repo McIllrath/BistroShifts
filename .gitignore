@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# Local sqlite database (do not commit)
+/db/
+*.sqlite
+*.sqlite-journal
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Temporary helper scripts
+/server/tmp*.js
+
+# Backups produced by cleanup
+/server/cleanup-backups/
+
+# Client build
+/client/dist/
+/server/public/
+
+# Client temp nginx config
+/client/nginx.conf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

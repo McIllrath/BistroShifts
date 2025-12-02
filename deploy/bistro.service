@@ -1,0 +1,16 @@
+[Unit]
+Description=BistroShifts Node App
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/bistro/server
+Environment=NODE_ENV=production
+Environment=PORT=4000
+ExecStart=/usr/bin/node index.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
