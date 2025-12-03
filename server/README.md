@@ -107,15 +107,3 @@ Troubleshooting
 
 - If you see `SQLITE_BUSY` during concurrent test runs, try increasing `PRAGMA busy_timeout` or run tests serially. The project sets the sqlite busy timeout automatically in `db.js`.
 - For Postgres, ensure `DATABASE_URL` points to a reachable DB and run `npm run migrate` before starting the server.
-
-Next steps I can help with
-
-- Add a GitHub Actions CI workflow to run migrations and tests.
-- Prepare a PR with these docs and a short changelog.
-- Add a Docker Compose override to run server + Postgres + client with proper env wiring.
-
-If you want, I can now:
-- Create a CI workflow (GitHub Actions) that runs `npm test` and `npm run migrate`.
-- Commit these README changes and prepare a PR message.
-
-Which would you like me to do next?
