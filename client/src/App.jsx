@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Login from './Login'
+import PasswordReset from './PasswordReset'
 import Shifts from './Shifts'
 import Admin from './Admin'
 import Kiosk from './Kiosk'
@@ -10,6 +11,14 @@ export default function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [user, setUser] = useState(null)
   const [view, setView] = useState('shifts')
+  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    // Listen for path changes
+    const handlePopState = () => setCurrentPath(window.location.pathname)
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
   useEffect(() => {
     async function fetchMe() {
@@ -36,6 +45,15 @@ export default function App() {
     setToken(null)
     setUser(null)
     localStorage.removeItem('token')
+  }
+
+  // Show password reset page if URL contains /password-reset
+  if (window.location.pathname === '/password-reset' || currentPath === '/password-reset') {
+    return (
+      <div className="container py-4">
+        <PasswordReset />
+      </div>
+    )
   }
 
   return (

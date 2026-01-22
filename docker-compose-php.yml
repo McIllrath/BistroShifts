@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: bistroshifts_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-bistroshifts}
+      MYSQL_USER: ${DB_USER:-bistro}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-bistropass}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./server/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - bistro-network
+
+  # PHP/Apache Server
+  server:
+    build:
+      context: ./server/php
+      dockerfile: Dockerfile
+    container_name: bistroshifts_server
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-8080}:80"
+    environment:
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-bistroshifts}
+      DB_USER: ${DB_USER:-bistro}
+      DB_PASSWORD: ${DB_PASSWORD:-bistropass}
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-a-secure-random-string}
+    depends_on:
+      - db
+    volumes:
+      - ./server/php:/var/www/html
+      - ./client-build:/var/www/html/client
+    networks:
+      - bistro-network
+
+  # Optional: phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: bistroshifts_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "${PHPMYADMIN_PORT:-8081}:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER:-bistro}
+      PMA_PASSWORD: ${DB_PASSWORD:-bistropass}
+    depends_on:
+      - db
+    networks:
+      - bistro-network
+
+volumes:
+  db_data:
+
+networks:
+  bistro-network:
+    driver: bridge
